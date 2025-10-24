@@ -2,16 +2,24 @@ import csv
 from datetime import datetime
 
 def leer_ventas(archivo_csv):
-    """Lee las ventas desde un archivo CSV."""
+    """Lee las ventas desde un archivo CSV """
     ventas = []
-    with open(archivo_csv, newline='', encoding='utf-8') as csvfile:
+    with open(archivo_csv, newline='', encoding='utf-8-sig') as csvfile:
         lector = csv.DictReader(csvfile)
+
         for fila in lector:
-            ventas.append({
-                'producto': fila['producto'],
-                'cantidad': int(fila['cantidad']),
-                'precio_unitario': float(fila['precio_unitario'])
-            })
+            producto = fila.get('producto') or fila.get('Producto') or fila.get('descripcion') or fila.get('nombre')
+            cantidad = fila.get('cantidad') or fila.get('Cantidad') or fila.get('unidades')
+            precio = fila.get('precio_unitario') or fila.get('Precio_unitario') or fila.get('precio') or fila.get('Precio')
+
+            if producto and cantidad and precio:
+                ventas.append({
+                    'producto': producto.strip(),
+                    'cantidad': int(cantidad),
+                    'precio_unitario': float(precio)
+                })
+            else:
+                print(f"⚠️ Fila con datos incompletos: {fila}")
     return ventas
 
 def calcular_total(ventas):
@@ -38,4 +46,5 @@ if __name__ == "__main__":
     total, alertas = calcular_total(ventas)
     generar_reporte(total, alertas)
     print("✅ Reporte generado correctamente.")
+
 
