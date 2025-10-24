@@ -1,6 +1,19 @@
 pipeline {
 agent any
 
+triggers {
+// Ejecutar todos los días a las 21:00 (hora del servidor Jenkins)
+cron('H 21 * * *')
+}
+
+stages {
+stage('Checkout') {
+steps {
+echo 'Descargando código...'
+checkout scm
+}
+}
+  
 stages {
 stage('Preparar entorno') {
 steps {
