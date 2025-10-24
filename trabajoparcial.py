@@ -1,8 +1,41 @@
-def calcular_total(ventas):
-    """Calcula el total de ventas dadas en una lista."""
-    return sum(ventas)
-if __name__ == "principal":
-    ventas = [100, 250, 75, 300]
-    total = calcular_total(ventas)
+import csv
+from datetime import datetime
 
-    print(f"Total de ventas del día: ${total}")
+def leer_ventas(archivo_csv):
+    """Lee las ventas desde un archivo CSV."""
+    ventas = []
+    with open(archivo_csv, newline='', encoding='utf-8') as csvfile:
+        lector = csv.DictReader(csvfile)
+        for fila in lector:
+            ventas.append({
+                'producto': fila['producto'],
+                'cantidad': int(fila['cantidad']),
+                'precio_unitario': float(fila['precio_unitario'])
+            })
+    return ventas
+
+def calcular_total(ventas):
+    """Calcula el total de ventas y detecta anomalías."""
+    total = sum(ventas['cantidad'] * ventas['precio_unitario'] for ventas in ventas)
+    alertas = [ventas for ventas in ventas if ventas['cantidad'] > 100]
+    return total, alertas
+
+def generar_reporte(total, alertas):
+    """Genera un archivo de texto con el resumen diario."""
+    fecha = datetime.now().strftime("%Y-%m-%d")
+    with open(f"reporte_{fecha}.txt", "w", encoding="utf-8") as f:
+        f.write(f"📅 Reporte de ventas - {fecha}\n")
+        f.write(f"Total vendido: ${total:.2f}\n")
+        if alertas:
+            f.write("\n⚠️ Productos con ventas inusuales:\n")
+            for a in alertas:
+                f.write(f"- {a['producto']} ({a['cantidad']} unidades)\n")
+        else:
+            f.write("\nSin errores.\n")
+
+if __name__ == "__main__":
+    ventas = leer_ventas("ventas.csv")
+    total, alertas = calcular_total(ventas)
+    generar_reporte(total, alertas)
+    print("✅ Reporte generado correctamente.")
+
