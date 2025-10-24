@@ -1,8 +1,11 @@
-from principal import calcular_total
+from trabajoparcial import calcular_total
 
-def pruebas_calcular_total():
-    assert calcular_total([100, 200, 300]) == 600
-    assert calcular_total([]) == 0
-
-    assert calcular_total([50]) == 50
+def test_calcular_total():
+    ventas = [
+        {"producto": "A", "cantidad": 10, "precio_unitario": 2.0},
+        {"producto": "B", "cantidad": 5, "precio_unitario": 3.0},
+    ]
+    total, alertas = calcular_total(ventas)
+    assert total == 35.0
+    assert alertas == []
 
