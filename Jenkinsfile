@@ -12,12 +12,20 @@ bat 'venv\\Scripts\\activate && pip install -r requirements.txt'
 
 stage('Ejecutar script') {
 steps {
-echo "Ejecutando script principal..."
+echo "Generando reporte"
 bat 'venv\\Scripts\\activate && python trabajoparcial.py'
 }
 }
 }
 
+stage('Pruebas') {
+steps {
+sh 'venv\\Scripts\\activate && python pruebas.py'
+}
+}
+
+
+  
 post {
 success { echo "✅ Pipeline completado con éxito" }
 failure { echo "❌ Error en alguna etapa del pipeline" }
