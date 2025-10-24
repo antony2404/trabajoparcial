@@ -37,10 +37,10 @@ sh 'venv\\Scripts\\activate && python pruebas.py'
 }
 }
 
-
+archiveArtifacts artifacts: 'reporte_*.txt', fingerprint: true
   
 post {
-success { echo "✅ Pipeline completado con éxito" }
-failure { echo "❌ Error en alguna etapa del pipeline" }
+success { echo "✅ Reporte de ventas generado exitosamente" }
+failure { echo "❌ Error al generar reporte de ventas" }
 }
 }
