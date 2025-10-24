@@ -1,7 +1,9 @@
-﻿producto,cantidad,precio_unitario
-Arroz,30,2.5
-Leche,45,3.2
-Pan,150,1
-Azúcar,20,2.8
+producto,cantidad,precio_unitario
+Arroz,5,3.50
+Azúcar,2,4.00
+Aceite,1,9.50
+Pan,10,1.00
+Leche,8,3.20
+
 
 
